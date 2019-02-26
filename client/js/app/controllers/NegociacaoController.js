@@ -27,6 +27,39 @@ class NegociacaoController {
         this._limpaFormulario();
     }
 
+    importa() {
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", "negociacoes/semana");
+
+        xhr.onreadystatechange = () => {
+
+            /*
+            Value	State	            Description
+            0	    UNSENT              Client has been created. open() not called yet.
+            1	    OPENED	            open() has been called.
+            2	    HEADERS_RECEIVED    send() has been called, and headers and status are available.
+            3	    LOADING	            Downloading; responseText holds partial data.
+            4	    DONE	            The operation is complete.
+            */
+
+            if (xhr.readyState == 4) {
+
+                if (xhr.status == 200) {
+
+                    console.log("Obtendo as negociações do servidor.");
+
+                }else {
+
+                    console.log("Não foi possível obter as negociações do servidor.");
+                }
+            }
+        };
+        
+        xhr.send();
+    }
+
     _criaNegociacao() {
 
         return new Negociacao(
