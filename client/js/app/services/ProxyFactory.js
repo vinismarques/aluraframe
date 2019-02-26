@@ -4,28 +4,29 @@ class ProxyFactory {
 
         return new Proxy(objeto, {
 
-            get: function(target, prop, receiver) {
+                get: function(target, prop, receiver) {
 
-                if(props.includes(prop) && ProxyFactory._isFunction(target[prop])) {
+                    if(props.includes(prop) && ProxyFactory._isFunction(target[prop])) {
 
-                    return function() {
+                        return function() {
 
-                        console.log(`Interceptando ${prop}`);
-                        Reflect.apply(target[prop], target, arguments);
-                        return acao(target);
+                            console.log(`Interceptando ${prop}`);
+                            Reflect.apply(target[prop], target, arguments);
+                            acao(target);
+                        }
                     }
+
+                    return Reflect.get(target, prop, receiver);
+                },
+
+                set: function(target, prop, value, receiver) {
+
+                    if(props.includes(prop)){
+                        target[prop] = value;
+                        acao(target);
+                    }
+                    return Reflect.set(target, prop, value, receiver);
                 }
-
-                return Reflect.get(target, prop, receiver);
-            },
-
-            set: function(target, prop, value, receiver) {
-
-                if(props.includes(prop)){
-                    acao(target);
-                }
-                return Reflect.set(target, prop, value, receiver);
-            }
         });
     }
 
